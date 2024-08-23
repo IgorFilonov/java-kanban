@@ -1,12 +1,12 @@
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Map;
+
 
 public class TaskManager {
 
-    private Map<Integer, Task> tasks = new HashMap<>();
-    private Map<Integer, Epic> epics = new HashMap<>();
-    private Map<Integer, Subtask> subtasks = new HashMap<>();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int idCounter = 0;
 
     // Генерация  идентификатора
