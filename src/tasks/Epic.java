@@ -1,3 +1,5 @@
+package tasks;
+
 import java.util.ArrayList;
 
 
@@ -35,6 +37,8 @@ public class Epic extends Task {
             }
             if (subtask.getStatus() != Status.NEW) {
                 allNew = false;
+            } if (!allDone && !allNew) {
+                break;
             }
         }
 
@@ -49,7 +53,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "tasks.Epic{" +
                 "id=" + getId() +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +

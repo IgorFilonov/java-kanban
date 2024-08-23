@@ -1,4 +1,8 @@
-
+import manager.TaskManager;
+import tasks.Epic;
+import tasks.Status;
+import tasks.Subtask;
+import tasks.Task;
 
 public class Main {
 
@@ -8,18 +12,18 @@ public class Main {
 
                 TaskManager manager = new TaskManager();
 
-                /* Тесты согластно ТЗ
-                Task task1 = new Task("Переезд", "Собрать коробки");
+                // Тесты согластно ТЗ
+               /* tasks.Task task1 = new tasks.Task("Переезд", "Собрать коробки");
                 manager.addTask(task1);
-                Task task2 = new Task("ДР Друга", "Купить подарок");
+                tasks.Task task2 = new tasks.Task("ДР Друга", "Купить подарок");
                 manager.addTask(task2);
 
-                Epic epic1 = new Epic("Спорт", "Тренировка");
+                tasks.Epic epic1 = new tasks.Epic("Спорт", "Тренировка");
                 manager.addEpic(epic1);
 
-                Subtask subtask1 = new Subtask("Пробежка", "5 км", epic1.getId());
+                tasks.Subtask subtask1 = new tasks.Subtask("Пробежка", "5 км", epic1.getId());
                 manager.addSubtask(subtask1);
-                Subtask subtask2 = new Subtask("Подтягивания ", "4подхода", epic1.getId());
+                tasks.Subtask subtask2 = new tasks.Subtask("Подтягивания ", "4подхода", epic1.getId());
                 manager.addSubtask(subtask2);
 
 
@@ -29,7 +33,7 @@ public class Main {
                 System.out.println("Подзадачи: " + manager.getAllSubtasks());
 
 
-                subtask1.setStatus(Status.DONE);
+                subtask1.setStatus(tasks.Status.DONE);
                 manager.updateSubtask(subtask1);
                 System.out.println("Обнавления Эпика: " + manager.getEpic(epic1.getId()));
                 manager.removeSubtask(subtask1.getId());
