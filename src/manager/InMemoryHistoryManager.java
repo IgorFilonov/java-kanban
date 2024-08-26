@@ -11,10 +11,14 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (history.size() == 10) {
-            history.remove(0); // Если в истории уже 10 задач, удаляем самую старую
+        if (task == null) {
+            return;
         }
-        history.add(task); // Добавляем новую задачу в конец истории
+
+        if (history.size() >= 10) {
+            history.remove(0);
+        }
+        history.add(task);
     }
 
     @Override
