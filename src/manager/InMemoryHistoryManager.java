@@ -24,7 +24,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private Node<Task> head; // Голова списка
     private Node<Task> tail; // Хвост списка
-    private final Map<Integer, Node<Task>> nodeMap = new HashMap<>(); // Мапа для  доступа к узлам по id
+    private final Map<Integer, Node<Task>> nodeMap = new HashMap<>();  // Мапа для  доступа к узлам по id
 
     // Добавление новой задачи
     @Override
