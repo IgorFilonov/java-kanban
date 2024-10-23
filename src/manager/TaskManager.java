@@ -11,7 +11,9 @@ public interface TaskManager {
 
     // Получение списков
     List<Task> getAllTasks();
+
     List<Epic> getAllEpics();
+
     List<Subtask> getAllSubtasks();
 
     // Получение  по идентификатору
