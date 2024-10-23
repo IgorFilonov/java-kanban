@@ -39,7 +39,8 @@ public class Epic extends Task {
             }
             if (subtask.getStatus() != Status.NEW) {
                 allNew = false;
-            } if (!allDone && !allNew) {
+            }
+            if (!allDone && !allNew) {
                 break;
             }
         }
