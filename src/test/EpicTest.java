@@ -22,7 +22,7 @@ class EpicTest {
     void testEpicCannotAddItselfAsSubtask() {
         Epic epic = new Epic("Эпик", "Описание");
         epic.setId(1);
-        Subtask subtask = new Subtask("Подзадача", "Описание подзадачи",  epic.getId());
+        Subtask subtask = new Subtask("Подзадача", "Описание подзадачи", epic.getId());
 
         assertThrows(IllegalArgumentException.class, () -> epic.addSubtask(subtask), "Эпик не может содержать себя как подзадачу.");
     }
