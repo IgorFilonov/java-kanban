@@ -4,7 +4,7 @@ import manager.InMemoryHistoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
-
+import tasks.Status;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -41,14 +41,19 @@ class InMemoryHistoryManagerTest {
     // Тест сохранения состояния задачи в истории
     @Test
     void testHistoryPreservesTaskState() {
+        // Сохраняем ожидаемые значения до добавления задачи в историю
+        String expectedName = task.getName();
+        String expectedDescription = task.getDescription();
+        Status expectedStatus = task.getStatus();
+
         historyManager.add(task);
 
         List<Task> history = historyManager.getHistory();
         Task historyTask = history.get(0);
 
-        assertEquals(task.getName(), historyTask.getName(), "Имя задачи должно совпадать.");
-        assertEquals(task.getDescription(), historyTask.getDescription(), "Описание задачи должно совпадать.");
-        assertEquals(task.getStatus(), historyTask.getStatus(), "Статус задачи должен совпадать.");
+        assertEquals(expectedName, historyTask.getName(), "Имя задачи должно совпадать.");
+        assertEquals(expectedDescription, historyTask.getDescription(), "Описание задачи должно совпадать.");
+        assertEquals(expectedStatus, historyTask.getStatus(), "Статус задачи должен совпадать.");
     }
 
     // Тест удаления задачи из истории

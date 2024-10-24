@@ -29,8 +29,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     // Добавление новой задачи
     @Override
     public void add(Task task) {
-        if (nodeMap.containsKey(task.getId())) {
-            removeNode(nodeMap.get(task.getId()));
+        if (task == null) {
+            return;
+        }
+        Node<Task> node = nodeMap.get(task.getId());
+        if (node != null) {
+            removeNode(node);
         }
         linkLast(task);
     }
