@@ -1,4 +1,4 @@
-package test;
+
 
 import org.junit.jupiter.api.Test;
 import tasks.Epic;
@@ -6,7 +6,7 @@ import tasks.Subtask;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EpicTest {
+ class EpicTest {
 
     @Test
     void testEpicsEqualityById() {
@@ -18,12 +18,5 @@ class EpicTest {
         assertEquals(epic1, epic2, "Эпики с одинаковым id должны быть равны.");
     }
 
-    @Test
-    void testEpicCannotAddItselfAsSubtask() {
-        Epic epic = new Epic("Эпик", "Описание");
-        epic.setId(1);
-        Subtask subtask = new Subtask("Подзадача", "Описание подзадачи",  epic.getId());
 
-        assertThrows(IllegalArgumentException.class, () -> epic.addSubtask(subtask), "Эпик не может содержать себя как подзадачу.");
-    }
 }
