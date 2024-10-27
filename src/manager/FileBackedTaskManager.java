@@ -17,18 +17,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    // Метод автосохранения
+    // Метод сохранения
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic\n");
             for (Task task : getAllTasks()) {
                 writer.write(toString(task) + "\n");
-            }
-            for (Epic epic : getAllEpics()) {
-                writer.write(toString(epic) + "\n");
-            }
-            for (Subtask subtask : getAllSubtasks()) {
-                writer.write(toString(subtask) + "\n");
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка сохранения в файл", e);
@@ -37,18 +31,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     // Преобразование задачи в строку
     private String toString(Task task) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(task.getId()).append(",")
+                .append(task.getType()).append(",")
+                .append(task.getName()).append(",")
+                .append(task.getStatus()).append(",")
+                .append(task.getDescription());
+
         if (task instanceof Subtask) {
-            Subtask subtask = (Subtask) task;
-            return String.format("%d,SUBTASK,%s,%s,%s,%d",
-                    subtask.getId(), subtask.getName(), subtask.getStatus(),
-                    subtask.getDescription(), subtask.getEpicId());
-        } else if (task instanceof Epic) {
-            return String.format("%d,EPIC,%s,%s,%s,",
-                    task.getId(), task.getName(), task.getStatus(), task.getDescription());
-        } else {
-            return String.format("%d,TASK,%s,%s,%s,",
-                    task.getId(), task.getName(), task.getStatus(), task.getDescription());
+            sb.append(",").append(((Subtask) task).getEpicId());
         }
+
+        return sb.toString();
     }
 
     // Восстановление задачи из строки
@@ -79,14 +73,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
         try {
             List<String> lines = Files.readAllLines(file.toPath());
-            for (String line : lines.subList(1, lines.size())) { // Пропускаем заголовок
+            for (String line : lines.subList(1, lines.size())) {
                 Task task = manager.fromString(line);
-                if (task instanceof Subtask) {
-                    manager.createSubtask((Subtask) task);
-                } else if (task instanceof Epic) {
-                    manager.createEpic((Epic) task);
-                } else {
-                    manager.createTask(task);
+                switch (task.getType()) {
+                    case SUBTASK:
+                        manager.createSubtask((Subtask) task);
+                        break;
+                    case EPIC:
+                        manager.createEpic((Epic) task);
+                        break;
+                    case TASK:
+                        manager.createTask(task);
+                        break;
                 }
             }
         } catch (IOException e) {
