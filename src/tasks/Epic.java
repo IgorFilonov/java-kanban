@@ -1,5 +1,7 @@
 package tasks;
 
+import manager.TaskType;
+
 import java.util.ArrayList;
 
 
@@ -52,6 +54,11 @@ public class Epic extends Task {
         } else {
             setStatus(Status.IN_PROGRESS);
         }
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 
     @Override

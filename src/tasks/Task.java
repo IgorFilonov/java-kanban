@@ -2,6 +2,8 @@ package tasks;
 
 import java.util.Objects;
 
+import manager.TaskType;
+
 public class Task {
 
     private int id;
@@ -63,6 +65,9 @@ public class Task {
         return Objects.hash(id);
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 
     @Override
     public String toString() {
