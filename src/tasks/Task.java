@@ -1,6 +1,8 @@
 package tasks;
 
 import java.util.Objects;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import manager.TaskType;
 
@@ -10,12 +12,16 @@ public class Task {
     private String name;
     private String description;
     private Status status;
+    private Duration duration;
+    private LocalDateTime startTime;
 
-
-    public Task(String name, String description) {
+    public Task(String name, String description, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW; // Изначально статус задачи "NEW"
+        this.duration = duration;
+        this.startTime = startTime;
+
     }
 
 
@@ -51,7 +57,34 @@ public class Task {
         this.status = status;
     }
 
-    //  сравнения задач по идентификатору
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime != null ? startTime.plus(duration) : null;
+    }
+
+    // Проверка на пересечения  задачи по времени, сравнивая их startTime и endTime
+    public boolean isOverlapping(Task otherTask) {
+        if (this.getStartTime() == null || otherTask.getStartTime() == null) return false;
+        return this.getStartTime().isBefore(otherTask.getEndTime()) &&
+                this.getEndTime().isAfter(otherTask.getStartTime());
+    }
+
+    //  сравнения задач по идентификат
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,6 +109,9 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 }
