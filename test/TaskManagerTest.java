@@ -50,11 +50,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
         // Проверяем статус эпика
         assertEquals(Status.DONE, manager.getEpic(epic.getId()).getStatus());
     }
-
     @Test
     void testHistory() {
         Task task1 = new Task("Task 1", "Desc", Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task("Task 2", "Desc", Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task("Task 2", "Desc", Duration.ofHours(1), LocalDateTime.now().plusHours(1)); // Добавляем интервал
+
         manager.createTask(task1);
         manager.createTask(task2);
 

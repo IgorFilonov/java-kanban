@@ -80,8 +80,8 @@ public class Task {
     // Проверка на пересечения  задачи по времени, сравнивая их startTime и endTime
     public boolean isOverlapping(Task otherTask) {
         if (this.getStartTime() == null || otherTask.getStartTime() == null) return false;
-        return !this.getEndTime().isBefore(otherTask.getStartTime()) &&
-                !this.getStartTime().isAfter(otherTask.getEndTime());
+        return this.getStartTime().isBefore(otherTask.getEndTime()) &&
+                this.getEndTime().isAfter(otherTask.getStartTime());
     }
 
     //  сравнения задач по идентификатору

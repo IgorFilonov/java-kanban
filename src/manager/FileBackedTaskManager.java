@@ -111,6 +111,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     // Переопределение методов для автосохранения
     @Override
     public void createTask(Task task) {
+        validateOverlap(task);
         super.createTask(task);
         save();
     }
@@ -123,12 +124,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public void createSubtask(Subtask subtask) {
+        validateOverlap(subtask);
         super.createSubtask(subtask);
         save();
     }
 
     @Override
     public void updateTask(Task task) {
+        validateOverlap(task);
         super.updateTask(task);
         save();
     }
@@ -138,9 +141,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.updateEpic(epic);
         save();
     }
+    //Проверка на пересечения
+    private void validateOverlap(Task newTask) {
+        for (Task existingTask : getPrioritizedTasks()) {
+            if (existingTask.isOverlapping(newTask)) {
+                throw new IllegalArgumentException("Новая задача пересекается с существующей задачей: " + existingTask.getName());
+            }
+        }
+    }
 
     @Override
     public void updateSubtask(Subtask subtask) {
+        validateOverlap(subtask);
         super.updateSubtask(subtask);
         save();
     }
