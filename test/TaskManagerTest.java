@@ -37,16 +37,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void testEpicStatusCalculation() {
         Epic epic = new Epic("Epic", "Description");
         manager.createEpic(epic);
-
         Subtask subtask1 = new Subtask("Subtask 1", "Description", Duration.ofHours(1), LocalDateTime.now(), epic.getId());
         manager.createSubtask(subtask1);
         assertEquals(Status.NEW, manager.getEpic(epic.getId()).getStatus());
-
-        // Меняем статус подзадачи и обновляем в менеджере
         subtask1.setStatus(Status.DONE);
         manager.updateSubtask(subtask1);
-
-        // Проверяем статус эпика
         assertEquals(Status.DONE, manager.getEpic(epic.getId()).getStatus());
     }
     @Test
