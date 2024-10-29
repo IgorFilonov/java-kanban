@@ -141,6 +141,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.updateEpic(epic);
         save();
     }
+
     //Проверка на пересечения
     private void validateOverlap(Task newTask) {
         for (Task existingTask : getPrioritizedTasks()) {

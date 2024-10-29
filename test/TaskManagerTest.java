@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
 
-     // Инициализация менеджера в конкретных тестах
+    // Инициализация менеджера в конкретных тестах
 
     @Test
     void testCreateAndGetTask() {
@@ -44,6 +44,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         manager.updateSubtask(subtask1);
         assertEquals(Status.DONE, manager.getEpic(epic.getId()).getStatus());
     }
+
     @Test
     void testHistory() {
         Task task1 = new Task("Task 1", "Desc", Duration.ofHours(1), LocalDateTime.now());
