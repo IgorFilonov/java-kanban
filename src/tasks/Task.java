@@ -84,7 +84,7 @@ public class Task {
                 this.getEndTime().isAfter(otherTask.getStartTime());
     }
 
-    //  сравнения задач по идентификатору
+    //  сравнения задач по идентификат
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
