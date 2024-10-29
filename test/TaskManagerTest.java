@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
 
-    @BeforeEach
-    abstract void setUp(); // Инициализация менеджера в конкретных тестах
+     // Инициализация менеджера в конкретных тестах
 
     @Test
     void testCreateAndGetTask() {
