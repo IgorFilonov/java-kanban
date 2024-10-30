@@ -12,7 +12,7 @@ import com.google.gson.GsonBuilder;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-class HttpTaskServer {
+public class HttpTaskServer {
     private final HttpServer server;
     private final TaskManager taskManager;
 
