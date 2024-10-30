@@ -1,20 +1,20 @@
-package Server;
+package server;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import tasks.Epic;
+import tasks.Subtask;
 import manager.TaskManager;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-public class EpicHandler extends BaseHttpHandler implements HttpHandler {
+public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
     private final Gson gson;
 
-    public EpicHandler(TaskManager taskManager, Gson gson) {
+    public SubtaskHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
         this.gson = gson;
     }
@@ -27,25 +27,25 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         try {
             switch (method) {
                 case "GET":
-                    if ("/epics".equals(path)) {
-                        sendText(exchange, gson.toJson(taskManager.getAllEpics()), 200);
+                    if ("/subtasks".equals(path)) {
+                        sendText(exchange, gson.toJson(taskManager.getAllSubtasks()), 200);
                     } else {
                         sendNotFound(exchange);
                     }
                     break;
                 case "POST":
-                    if ("/epics".equals(path)) {
-                        Epic epic = gson.fromJson(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8), Epic.class);
-                        taskManager.createEpic(epic);
-                        sendText(exchange, gson.toJson(epic), 201);
+                    if ("/subtasks".equals(path)) {
+                        Subtask subtask = gson.fromJson(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8), Subtask.class);
+                        taskManager.createSubtask(subtask);
+                        sendText(exchange, gson.toJson(subtask), 201);
                     } else {
                         sendNotFound(exchange);
                     }
                     break;
                 case "DELETE":
-                    if ("/epics".equals(path)) {
+                    if ("/subtasks".equals(path)) {
                         taskManager.deleteAllTasks();
-                        sendText(exchange, "{\"message\":\"All epics deleted\"}", 200);
+                        sendText(exchange, "{\"message\":\"All subtasks deleted\"}", 200);
                     } else {
                         sendNotFound(exchange);
                     }
