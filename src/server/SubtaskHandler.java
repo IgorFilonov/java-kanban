@@ -45,7 +45,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 case "DELETE":
                     if ("/subtasks".equals(path)) {
                         taskManager.deleteAllTasks();
-                        sendText(exchange, "{\"message\":\"All subtasks deleted\"}", 200);
+                        sendText(exchange, "{\"message\":\"Все подзадачи удалены\"}", 200);
                     } else {
                         sendNotFound(exchange);
                     }
@@ -54,8 +54,8 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                     sendNotFound(exchange);
             }
         } catch (Exception e) {
-            System.err.println("Error handling request: " + e.getMessage());
-            sendError(exchange, "An error occurred: " + e.getMessage());
+            System.err.println("Ошибка обработки запроса: " + e.getMessage());
+            sendError(exchange, "Произошла ошибка: " + e.getMessage());
         }
     }
 }
