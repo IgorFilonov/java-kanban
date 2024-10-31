@@ -205,4 +205,51 @@ class HttpTaskManagerTasksTest {
         // Проверяем, что конфликтующая задача не была добавлена в менеджер
         assertEquals(1, manager.getAllTasks().size(), "Конфликтующая задача не должна была быть добавлена");
     }
+
+    @Test
+    public void testDeleteTaskById() throws IOException, InterruptedException {
+        // Создаём и добавляем задачу
+        Task task = new Task("Task to Delete", "This task will be deleted", Duration.ofMinutes(15), LocalDateTime.now().plusHours(1));
+        manager.createTask(task);
+        int taskId = manager.getAllTasks().get(0).getId();
+
+        // Отправляем DELETE-запрос для удаления задачи по ID
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/" + taskId);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Проверяем успешный статус ответа
+        assertEquals(200, response.statusCode(), "Некорректный статус ответа");
+
+        // Проверяем, что задача была удалена
+        assertNull(manager.getTask(taskId), "Задача не была удалена");
+    }
+
+    @Test
+    public void testInvalidUpdateTask() throws IOException, InterruptedException {
+        // Создаём задачу с несуществующим ID
+        Task task = new Task("Nonexistent Task", "Trying to update nonexistent task", Duration.ofMinutes(10), LocalDateTime.now().plusHours(2));
+        task.setId(999); // Устанавливаем несуществующий ID
+        String taskJson = gson.toJson(task);
+
+        // Отправляем PUT-запрос для обновления задачи с несуществующим ID
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/tasks/" + task.getId());
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .PUT(HttpRequest.BodyPublishers.ofString(taskJson))
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        // Проверяем, что возвращается статус 404
+        assertEquals(404, response.statusCode(), "Ожидаемый статус 404 для обновления несуществующей задачи");
+    }
+
 }
