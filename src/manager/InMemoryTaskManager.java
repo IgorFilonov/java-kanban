@@ -1,8 +1,6 @@
 package manager;
 
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import tasks.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +45,14 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(subtasks.values());
     }
 
+
+    protected void validateOverlap(Task newTask) throws TaskValidationException {
+        for (Task existingTask : getPrioritizedTasks()) {
+            if (existingTask.isOverlapping(newTask)) {
+                throw new TaskValidationException("Новая задача пересекается с существующей задачей: " + existingTask.getName());
+            }
+        }
+    }
 
     @Override
     public Task getTask(int id) {
@@ -107,8 +113,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        if (tasks.containsKey(task.getId())) {
-            prioritizedTasks.remove(tasks.get(task.getId()));
+        Task existingTask = tasks.get(task.getId());
+        if (existingTask != null) {
+            prioritizedTasks.remove(existingTask);
+            validateOverlap(task);
             tasks.put(task.getId(), task);
             if (task.getStartTime() != null) {
                 prioritizedTasks.add(task);
@@ -126,6 +134,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
+            validateOverlap(subtask);
             prioritizedTasks.remove(subtasks.get(subtask.getId()));
             subtasks.put(subtask.getId(), subtask);
             if (subtask.getStartTime() != null) {
@@ -142,6 +151,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createTask(Task task) {
+        validateOverlap(task);
         task.setId(generateId());
         tasks.put(task.getId(), task);
         if (task.getStartTime() != null) {
@@ -157,15 +167,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createSubtask(Subtask subtask) {
+        validateOverlap(subtask);
         subtask.setId(generateId());
         subtasks.put(subtask.getId(), subtask);
 
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
-            epic.addSubtask(subtask);  // добавляем подзадачу в список эпика
-            epic.updateStatus();       // обновляем статус эпика после добавления
+            epic.addSubtask(subtask);
+            epic.updateStatus();
         }
     }
+
 
     @Override
     public List<Task> getHistory() {
